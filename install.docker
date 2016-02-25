@@ -1,0 +1,39 @@
+## -- Copyright Johann Höchtl 2016 https://github.com/the42/bevaddress-dataload
+##
+## This script installs PostgreSQL including POSTGIS support via Docker
+# Documentation is available as
+# - for PostgreSQL on Docker https://hub.docker.com/_/postgres/
+# - for PostGIS on Docker https://hub.docker.com/r/mdillon/postgis/
+# - for Docker data container compartmentalization https://docs.docker.com/engine/userguide/dockervolumes/#creating-and-mounting-a-data-volume-container
+
+## This script assumes that Docker is installed, read more at
+# https://docs.docker.com/engine/installation/ubuntulinux/
+# AND not requiring root access as described
+# https://docs.docker.com/engine/installation/ubuntulinux/#create-a-docker-group
+
+## Pull postgis image
+docker pull mdillon/postgis
+
+# Create the POSTGIS data store volume
+docker create -v /var/lib/postgresql/data --name bevdata mdillon/postgis /bin/true
+
+# !!!! Create the POSTGIS instance. Replace <YOURPASSWORD> with the password to access the database
+export POSTGRES_PASSWORD=<YOURPASSWORD>
+# The following command creates the dockerized POSTGIS-Database.
+# !!!! If your installation does not allow arbitrary port access,
+# for example when you create the instance on a remote cloud host,
+# restrict the allowed port mappings by commenting the following line,
+# uncommenting the line following the next line, and setting the allowed port range
+# of parameter -p 6001:5432
+# cf. documentation https://docs.docker.com/engine/reference/run/#expose-incoming-ports
+docker run --name bevaddress -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata mdillon/postgis
+# docker run --name bevaddress -p 6001:5432 -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata mdillon/postgis
+
+
+## check how to update the postgres container while retaining the data
+
+## Test connection
+## get the docker port and note the mapping
+# docker port bevaddress
+## Connect to the server to test connection
+# psql -U bevsu -h localhost -p 6001 -d bevaddress # where -p <port> is the port reported from the above command

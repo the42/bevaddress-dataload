@@ -1,0 +1,43 @@
+## -- Copyright Johann Höchtl 2016 https://github.com/the42/bevaddress-dataload
+##
+## This script installs PostgreSQL including POSTGIS support on Ubuntu
+# Documentation is available as
+# - for PostgreSQL installation on Ubuntu https://help.ubuntu.com/community/PostgreSQL
+# - for PostGIS http://postgis.net/install
+
+# Install PostgreSQL
+sudo apt-get install postgresql postgresql-contrib postgis
+
+## Set a password for the PostgreSQL user. From now on it is assumed that
+## PostgreSQL is running on the local host and accepting connections
+
+# The following command fires up psql and will prompt for a password for the superuser
+sudo -u postgres psql postgres<<SOURCE1
+
+-- set password for superuser
+\password <YOURPASSWORD>
+-- quit to shell prompt
+\q
+SOURCE1
+
+## Create a user which will be the owner of the BEVADDRESS database
+sudo -u postgres createuser bevsu
+
+# ... and give this user a password.
+# !!!! You will be prompted interactively
+sudo -u bevsu psql<<SOURCE2
+\password
+-- quit to shell prompt
+\q
+SOURCE2
+
+## Create the BEVADDRESS database with bevsu as the owner of the database
+createdb -O bevsu BEVADDRESS
+
+# Activate postgis in the BEVADDRESS database
+psql -U postgres -d BEVADDRESS -h localhost<<SOURCE3
+
+CREATE EXTENSION postgis;
+-- quit to shell prompt
+\q
+SOURCE3
