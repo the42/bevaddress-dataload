@@ -11,12 +11,12 @@
 # AND not requiring root access as described
 # https://docs.docker.com/engine/installation/ubuntulinux/#create-a-docker-group
 
-## Pull postgis image
-docker pull mdillon/postgis
+## Pull bevaddress image
+docker pull the42/bevaddress
 
 # Create the POSTGIS data store volume and a volume to hold the backups for database migration
-docker create -v /var/lib/postgresql/data --name bevdata mdillon/postgis echo "Postgresql BEVADDRESS data directory"
-docker create -v /var/lib/postgresql/backup --name bevdatabackup mdillon/postgis echo "Postgresql BEVADDRESS backup directory"
+docker create -v /var/lib/postgresql/data --name bevdata the42/bevaddress echo "Postgresql BEVADDRESS data directory"
+docker create -v /var/lib/postgresql/backup --name bevdatabackup the42/bevaddress echo "Postgresql BEVADDRESS backup directory"
 
 # !!!! Create the POSTGIS instance. Replace <YOURPASSWORD> with the password to access the database
 export POSTGRES_PASSWORD=<YOURPASSWORD>
@@ -27,8 +27,8 @@ export POSTGRES_PASSWORD=<YOURPASSWORD>
 # uncommenting the line following the next line, and setting the allowed port range
 # of parameter -p 6001:5432
 # cf. documentation https://docs.docker.com/engine/reference/run/#expose-incoming-ports
-docker run --name bevaddress -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata --volumes-from bevdatabackup mdillon/postgis
-# docker run --name bevaddress -p 6001:5432 -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata --volumes-from bevdatabackup mdillon/postgis
+docker run --name bevaddress -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata --volumes-from bevdatabackup the42/bevaddress
+# docker run --name bevaddress -p 6001:5432 -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata --volumes-from bevdatabackup the42/bevaddress
 
 ## Test connection
 ## get the docker port and note the mapping
