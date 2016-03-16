@@ -27,8 +27,8 @@ export POSTGRES_PASSWORD=<YOURPASSWORD>
 # uncommenting the line following the next line, and setting the allowed port range
 # of parameter -p 6001:5432
 # cf. documentation https://docs.docker.com/engine/reference/run/#expose-incoming-ports
-docker run --name bevaddress -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata --volumes-from bevdatabackup the42/bevaddress
-# docker run --name bevaddress -p 6001:5432 -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata --volumes-from bevdatabackup the42/bevaddress
+docker run --name bevaddress -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata --volumes-from bevdatabackup the42/bevdockerdb
+# docker run --name bevaddress -p 6001:5432 -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata --volumes-from bevdatabackup the42/bevdockerdb
 
 ## Test connection
 ## get the docker port and note the mapping
