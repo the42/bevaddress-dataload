@@ -256,7 +256,7 @@ CREATE TEXT SEARCH DICTIONARY bevaddress_thes (
 ALTER TEXT SEARCH CONFIGURATION german ALTER MAPPING FOR asciiword, host, word, asciihword, hword, uint WITH bevaddress_syn, bevaddress_thes, german_stem;
 
 ---Use the following to reset text search to default
---ALTER TEXT SEARCH CONFIGURATION german ALTER MAPPING FOR host WITH simple;
+--ALTER TEXT SEARCH CONFIGURATION german ALTER MAPPING FOR host, uint WITH simple;
 --ALTER TEXT SEARCH CONFIGURATION german ALTER MAPPING FOR asciiword, word, asciihword, hword WITH german_stem;
 --DROP  TEXT SEARCH DICTIONARY bevaddress_syn;
 --DROP TEXT SEARCH DICTIONARY bevaddress_thes;
