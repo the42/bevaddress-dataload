@@ -265,7 +265,7 @@ ALTER TEXT SEARCH CONFIGURATION german ALTER MAPPING FOR asciiword, host, word, 
 --Creata a specific table for FTS
 DROP TABLE IF EXISTS ADDRITEMS;
 CREATE TABLE ADDRITEMS AS
-select plz, gemeindename, ortsname, strassenname, strassennamenzusatz, hausnrtext, hausnrverbindung1, hofname, gemeinde.gkz, ortschaft.okz, strasse.skz, adresse.adrcd, bld
+select plz, gemeindename, ortsname, strassenname, strassennamenzusatz, hausnrzahl1::text, hausnrtext, hausnrverbindung1, hofname, gemeinde.gkz, ortschaft.okz, strasse.skz, adresse.adrcd, bld
 from adresse
 inner join strasse
 on adresse.skz = strasse.skz
@@ -299,6 +299,7 @@ UPDATE ADDRITEMS
     setweight(to_tsvector('german', coalesce(ortsname,'')), 'B') || ' ' ||
     setweight(to_tsvector('german', coalesce(strassenname,'')), 'C') || ' ' ||
     setweight(to_tsvector('german', coalesce(strassennamenzusatz,'')), 'D') || ' ' ||
+    setweight(to_tsvector('german', coalesce(hausnrzahl1, '')), 'D') || ' ' ||
     setweight(to_tsvector('german', coalesce(hausnrtext,'')), 'D') || ' ' ||
     setweight(to_tsvector('german', coalesce(hausnrverbindung1,'')), 'D') || ' ' ||
     setweight(to_tsvector('german', coalesce(hofname,'')), 'D');
