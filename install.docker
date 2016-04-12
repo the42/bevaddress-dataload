@@ -12,11 +12,11 @@
 # https://docs.docker.com/engine/installation/ubuntulinux/#create-a-docker-group
 
 ## Pull bevaddress image
-docker pull the42/bevaddress
+docker pull the42/bevdockerdb
 
 # Create the POSTGIS data store volume and a volume to hold the backups for database migration
-docker create -v /var/lib/postgresql/data --name bevdata the42/bevaddress echo "Postgresql BEVADDRESS data directory"
-docker create -v /var/lib/postgresql/backup --name bevdatabackup the42/bevaddress echo "Postgresql BEVADDRESS backup directory"
+docker create -v /var/lib/postgresql/data --name bevdata the42/bevdockerdb echo "Postgresql BEVADDRESS data directory"
+docker create -v /var/lib/postgresql/backup --name bevdatabackup the42/bevdockerdb echo "Postgresql BEVADDRESS backup directory"
 
 # !!!! Create the POSTGIS instance. Replace <YOURPASSWORD> with the password to access the database
 export POSTGRES_PASSWORD=<YOURPASSWORD>
@@ -37,4 +37,6 @@ docker run --name bevaddress -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P
 # psql -U bevsu -h <IP-Address> -p 6001 -d bevaddress # where -p <port> is the port reported from the above command
 
 ## Upgrade the Postgres/PostGIS database while retaining the data
-## TODO: add documentation here
+## TODO
+## For a general procedure how to load a database backup see
+## https://myprivate42.wordpress.com/2016/04/01/restore-a-postgres-backup-into-a-docker-container/
