@@ -30,11 +30,19 @@ export POSTGRES_PASSWORD=<YOURPASSWORD>
 docker run --name bevaddress -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata --volumes-from bevdatabackup the42/bevdockerdb
 # docker run --name bevaddress -p 6001:5432 -e POSTGRES_USER=bevsu -e POSTGRES_DB=bevaddress -P -d --volumes-from bevdata --volumes-from bevdatabackup the42/bevdockerdb
 
-## Test connection
+
+##
+## Test connection, maintainance and updates
+##
+
 ## get the docker port and note the mapping
 # docker port bevaddress
 ## Connect to the server to test connection
 # psql -U bevsu -h <IP-Address> -p 6001 -d bevaddress # where -p <port> is the port reported from the above command
+
+# Later you likely want to create a less-privileged user with read-only access
+# to the database to perform queries and the like.
+# See http://www.dbrnd.com/2015/10/postgresql-script-to-create-a-read-only-database-user/
 
 ## Upgrade the Postgres/PostGIS database while retaining the data
 ## TODO

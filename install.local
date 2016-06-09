@@ -41,3 +41,7 @@ CREATE EXTENSION postgis;
 -- quit to shell prompt
 \q
 SOURCE3
+
+# Later you likely want to create a less-privileged user with read-only access
+# to the database to perform queries and the like.
+# See http://www.dbrnd.com/2015/10/postgresql-script-to-create-a-read-only-database-user/
