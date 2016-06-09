@@ -12,6 +12,10 @@ Information on how to install Postgres and create a database providing the Postg
 
 In case you intend to connect to an already up and running Postgres server, you still require the Postgres command line tools, especially `psql`. Install them using `apt-get install postgresql-client`. The database you create on your running Postgres-server requires the Postgis extension enabled. Once connected to the database, you can install this extension by issuing `CREATE EXTENSION postgis;` You may also check if the Postgis-extension is installed properly by running the query `SELECT PostGIS_full_version();`.
 
+## Alternative
+
+You can tremendously shorten all the above mentioned steps by installing the [pre-configured bevaddress PostGIS server](https://hub.docker.com/r/the42/bevdockerdb/) from Docker Hub.
+
 # Installation
 Once the Postgres database is up and running, you need the database server IP and port address, the database name which will hold the address data as well as username and password with the sufficient rights to create tables, alter tables, create indices and load data from CSV files.
 
