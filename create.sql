@@ -50,10 +50,15 @@ ALTER TABLE GEBAEUDE ADD COLUMN MGIAUSTRIAGK geometry(POINT);
 -- insert the HW and RW into this newly created column
 UPDATE GEBAEUDE SET MGIAUSTRIAGK = ST_SetSRID(ST_MakePoint(RW, HW), epsg);
 
--- add an additional column to the table GEBAEUDE to keep coordinates in lat / long
+-- add an additional column to the table GEBAEUDE to keep coordinates in lat / long in geometric units
 ALTER TABLE GEBAEUDE DROP COLUMN IF EXISTS LATLONG;
 ALTER TABLE GEBAEUDE ADD COLUMN LATLONG geometry(POINT);
 UPDATE GEBAEUDE SET LATLONG = ST_Transform(MGIAUSTRIAGK, 4326);
+-- add an additional column to the table GEBAEUDE to keep coordinates in lat / long in geography units for distance measures
+ALTER TABLE GEBAEUDE DROP COLUMN IF EXISTS LATLONG_G;
+ALTER TABLE GEBAEUDE ADD COLUMN LATLONG_G geography(POINT);
+UPDATE GEBAEUDE SET LATLONG_G = LATLONG::geography;
+
 
 DROP TABLE IF EXISTS ADRESSE_GST;
 CREATE TABLE ADRESSE_GST (
@@ -101,6 +106,10 @@ UPDATE ADRESSE SET MGIAUSTRIAGK = ST_SetSRID(ST_MakePoint(RW, HW), epsg);
 ALTER TABLE ADRESSE DROP COLUMN IF EXISTS LATLONG;
 ALTER TABLE ADRESSE ADD COLUMN LATLONG geometry(POINT);
 UPDATE ADRESSE SET LATLONG = ST_Transform(MGIAUSTRIAGK, 4326);
+-- add an additional column to the table ADRESSE to keep coordinates in lat / long in geography units for distance measures
+ALTER TABLE ADRESSE DROP COLUMN IF EXISTS LATLONG_G;
+ALTER TABLE ADRESSE ADD COLUMN LATLONG_G geography(POINT);
+UPDATE ADRESSE SET LATLONG_G = LATLONG::geography;
 
 DROP TABLE IF EXISTS STRASSE;
 CREATE TABLE STRASSE (
@@ -233,6 +242,10 @@ DROP INDEX IF EXISTS adresse_skz;
 CREATE INDEX adresse_skz ON ADRESSE(SKZ);
 DROP INDEX IF EXISTS adresse_hofname;
 CREATE INDEX adresse_hofname ON ADRESSE(HOFNAME);
+DROP INDEX IF EXISTS adresse_latlong;
+CREATE INDEX adresse_latlong ON ADRESSE USING GIST(LATLONG);
+DROP INDEX IF EXISTS adresse_latlong_g;
+CREATE INDEX adresse_latlong_g ON ADRESSE USING GIST(LATLONG_G);
 
 
 --- Prepare for full text search
