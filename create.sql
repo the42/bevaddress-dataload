@@ -44,6 +44,15 @@ CREATE TABLE GEBAEUDE (
 
 \copy GEBAEUDE(ADRCD, SUBCD, OBJEKTNUMMER, HAUPTADRESSE, HAUSNRVERBINDUNG2, HAUSNRZAHL3, HAUSNRBUCHSTABE3, HAUSNRVERBINDUNG3, HAUSNRZAHL4, HAUSNRBUCHSTABE4, HAUSNRGEBAEUDEBEZ, RW, HW, EPSG, QUELLADRESSE, BESTIMMUNGSART, EIGENSCHAFT) FROM 'GEBAEUDE.csv' (FORMAT csv, HEADER true, DELIMITER ';')
 
+-- There is an issue with the epsg codes and the translation of BEV address data from the SRIDs
+-- 31254, 31255, 31256. The contents of spatial_ref_sys.proj4text is used by PostGIS-Function
+-- ST_Transform to project from one coordinate system into another.
+-- In order to greatly increase accuracy, perform the following updates:
+
+UPDATE spatial_ref_sys SET proj4text = '+proj=tmerc +lat_0=0 +lon_0=10.33333333333333 +k=1 +x_0=0 +y_0=-5000000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs' WHERE srid = 31254;
+UPDATE spatial_ref_sys SET proj4text = '+proj=tmerc +lat_0=0 +lon_0=13.33333333333333 +k=1 +x_0=0 +y_0=-5000000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs' WHERE srid = 31255;
+UPDATE spatial_ref_sys SET proj4text = '+proj=tmerc +lat_0=0 +lon_0=16.33333333333333 +k=1 +x_0=0 +y_0=-5000000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs' WHERE srid = 31256;
+
 -- add an additional column to the table GEBAEUDE to keep the original RW, HW in the given EPSG code
 ALTER TABLE GEBAEUDE DROP COLUMN IF EXISTS MGIAUSTRIAGK;
 ALTER TABLE GEBAEUDE ADD COLUMN MGIAUSTRIAGK geometry(POINT);
