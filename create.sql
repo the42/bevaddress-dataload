@@ -48,6 +48,7 @@ CREATE TABLE GEBAEUDE (
 -- 31254, 31255, 31256. The contents of spatial_ref_sys.proj4text is used by PostGIS-Function
 -- ST_Transform to project from one coordinate system into another.
 -- In order to greatly increase accuracy, perform the following updates:
+-- cf. http://gis.stackexchange.com/questions/203982/st-transform-is-way-too-inexact
 
 UPDATE spatial_ref_sys SET proj4text = '+proj=tmerc +lat_0=0 +lon_0=10.33333333333333 +k=1 +x_0=0 +y_0=-5000000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs' WHERE srid = 31254;
 UPDATE spatial_ref_sys SET proj4text = '+proj=tmerc +lat_0=0 +lon_0=13.33333333333333 +k=1 +x_0=0 +y_0=-5000000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs' WHERE srid = 31255;
